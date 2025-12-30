@@ -18,4 +18,5 @@ public class BookSeatRequestDto {
     int cvv;
     int amount;
     String cardHolderName;
+    String idempotencyKey;
 }
