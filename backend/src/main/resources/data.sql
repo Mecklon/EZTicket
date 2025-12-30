@@ -1,0 +1,1 @@
+insert into users (id, email, password, username) values (1, 'fernandesmecklon3@gmail.com', '$2a$10$dY/pi1r87jBJd8b2lnt0wOQa7NkuMdUi9b02Kpoprzvuk4Zgvt7Aq','Mecklon Fernandes');

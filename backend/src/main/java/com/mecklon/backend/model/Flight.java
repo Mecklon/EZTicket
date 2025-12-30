@@ -2,10 +2,7 @@ package com.mecklon.backend.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +13,20 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Table(
+        indexes = {
+                @Index(
+                        name = "idx_flight_route_date_price",
+                        columnList = "from_, to_, departure"
+                ),
+                @Index(
+                        name = "idx_flight_airline",
+                        columnList = "airlineName"
+                )
+        }
+)
+
 public class Flight {
 
     @Id

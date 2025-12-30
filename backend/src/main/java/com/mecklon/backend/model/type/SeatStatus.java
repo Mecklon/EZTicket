@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 public enum SeatStatus {
     AVAILABLE,
-    ON_HOLE,
+    ON_HOLD,
     PAYMENT_IN_PROCESS,
     BOOKED
 }
