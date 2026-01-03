@@ -2,9 +2,7 @@ package com.mecklon.backend;
 
 
 import com.mecklon.backend.model.Payment;
-import com.mecklon.backend.model.Seat;
 import com.mecklon.backend.model.type.PaymentStatus;
-import com.mecklon.backend.model.type.SeatStatus;
 import com.mecklon.backend.repo.PaymentRepository;
 import com.mecklon.backend.repo.SeatRepository;
 import jakarta.transaction.Transactional;
@@ -20,40 +18,46 @@ import java.util.List;
 public class SeatCleanUpJob {
 
     private final SeatRepository seatRepository;
-    private final PaymentRepository paymentRepository;
+    private final SeatCleanUpService seatCleanUpService;
     private final PaymentService paymentService;
+    private final PaymentRepository paymentRepository;
 
     @Scheduled(fixedDelay = 60000)
     @Transactional
-    void cleanUpHolds(){
+    public void cleanUpHolds() {
         System.out.println("cleaning up holds");
         int rows = seatRepository.cleanUpHolds();
 
-        if(rows>0){
+        if (rows > 0) {
             System.out.println("seat holds released :" + rows);
         }
     }
 
-    @Transactional
-    void cleanUpAbortedPaymentProcess(Payment payment){
-        int changed = 0;
-        if(paymentService.verify(payment.getId())){
-            changed = paymentRepository.setPaymentStatusTo(payment.getId(), PaymentStatus.PAID);
-            if(changed==0) return;
-            seatRepository.setSeatStatusTo(payment.getId(), SeatStatus.BOOKED);
-        }else{
-            changed = paymentRepository.setPaymentStatusTo(payment.getId(), PaymentStatus.FAILED);
-            if(changed==0) return;
-            seatRepository.setSeatStatusTo(payment.getId(), SeatStatus.ON_HOLD);
+    @Scheduled(fixedDelay = 60000)
+    public void cleanUpAbortedPaymentProcesses() {
+        List<Payment> payments = seatRepository.getAbortedPayments(LocalDateTime.now().minusMinutes(10));
+        for (Payment payment : payments) {
+            seatCleanUpService.resolveInconsistentSeatStates(payment);
         }
     }
 
-    @Scheduled(fixedDelay = 60000)
-    void cleanUpAbortedPaymentProcesses(){
-        List<Payment> payments = paymentRepository.findAllByStatusAndCreationTimeStampBefore(PaymentStatus.PENDING, LocalDateTime.now().minusMinutes(2));
+    @Scheduled(fixedDelay = 180000)
+    public void refundFailedBookings(){
+        List<Payment> payments = paymentRepository.findByStatus(PaymentStatus.REFUND_PENDING);
+
         for(Payment payment : payments){
-            cleanUpAbortedPaymentProcess(payment);
+
+            try{
+                if(paymentService.revertPayment(payment.getId())){
+                    paymentRepository.setPaymentStatusTo(payment.getId(), PaymentStatus.REFUNDED);
+                }
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+
         }
     }
+
+
 
 }

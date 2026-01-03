@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PaymentRepository extends JpaRepository<Payment, String> {
@@ -19,10 +18,10 @@ public interface PaymentRepository extends JpaRepository<Payment, String> {
             update Payment p
             set
             p.status = :paymentStatus
-            where 
+            where
             p.id = :paymentId
             """)
     int setPaymentStatusTo(String paymentId, PaymentStatus paymentStatus);
 
-    List<Payment> findAllByStatusAndCreationTimeStampBefore(PaymentStatus paymentStatus, LocalDateTime localDateTime);
+    List<Payment> findByStatus(PaymentStatus paymentStatus);
 }

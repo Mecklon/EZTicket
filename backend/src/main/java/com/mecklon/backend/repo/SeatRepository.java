@@ -140,5 +140,21 @@ public interface SeatRepository extends JpaRepository<Seat, SeatKey> {
             """)
     void setSeatStatusTo(String paymentId, SeatStatus seatStatus);
 
+    @Query("""
+            select distinct s.payment
+            from
+            Seat s
+            where
+            s.payment.creationTimeStamp < :timeStamp
+            and s.status = 'PENDING'
+            """)
+    List<Payment> getAbortedPayments(LocalDateTime timeStamp);
 
+
+    @Query("""
+            update Seat s
+            set s.payment = null
+            where s.payment = :payment
+            """)
+    void detachPayment(Payment payment);
 }

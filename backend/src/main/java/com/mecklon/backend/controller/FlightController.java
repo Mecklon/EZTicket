@@ -23,7 +23,7 @@ public class FlightController {
     private final FlightService flightService;
 
     @PostMapping("/getFlights")
-    ResponseEntity<Page<FlightDto>> getFlights(@RequestBody GetFlightRequestDto request){
+    ResponseEntity<List<FlightDto>> getFlights(@RequestBody GetFlightRequestDto request){
         return ResponseEntity.status(HttpStatus.OK).body(flightService.getFlights(request));
     }
 

@@ -26,7 +26,7 @@ public class FlightSpecifications {
     public static Specification<Flight> departureOn(LocalDate date) {
         return (root, query, cb) -> {
             LocalDateTime startOfDay = date.atStartOfDay();
-            LocalDateTime endOfDay = date.atTime(23, 59, 59);
+            LocalDateTime endOfDay =  date.plusDays(1).atStartOfDay();
             return cb.between(root.get("departure"), startOfDay, endOfDay);
         };
     }

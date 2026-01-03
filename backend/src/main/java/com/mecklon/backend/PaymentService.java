@@ -8,15 +8,18 @@ import java.util.Random;
 public class PaymentService {
     Random random = new Random();
 
-    public void handlePayment(String cardHolderName, int cvv, int amount, Long cardNo) throws InterruptedException {
+    public void handlePayment(String cardHolderName, int cvv, int amount, Long cardNo, String paymentId) throws InterruptedException {
+        if(random.nextInt(100)==50){
+            throw new RuntimeException("Payment Error");
+        }
         Thread.sleep(random.nextInt(5) * 10);
     }
 
-    public void revertPayment() {
-
-    }
-
-    public boolean verify(String id) {
+    boolean revertPayment(String id) throws InterruptedException {
+        if(random.nextInt(100)==50){
+            throw new RuntimeException("Refund Error");
+        }
+        Thread.sleep(random.nextInt(5) * 10);
         return true;
     }
 }
