@@ -6,7 +6,7 @@
   --color-bg-dark: oklch(0.92 0 240);
   --color-bg: oklch(0.96 0 240);
   --color-bg-light: oklch(1 0 240);
-  --color-text: oklch(0.15 0 240);
+  --color-text: rgb(50,50,50);
   --color-border: oklch(0.6 0 240);
 }
 
@@ -29,7 +29,7 @@ body {
   box-sizing: border-box;
 }
 #root {
-  background-color: rgb(43, 43, 43);
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: flex-start;

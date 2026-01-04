@@ -5,6 +5,8 @@ import rolling from "./assets/rolling.gif";
 import usePostFetch from "./hooks/usePostFetch";
 import { useDispatch } from "react-redux";
 import { setUsername } from "./store/slices/AuthSlice";
+import { FaPlane } from "react-icons/fa6";
+
 
 function Signup() {
   const dispatch = useDispatch();
@@ -39,37 +41,41 @@ function Signup() {
     <form
       onSubmit={handleSubmit}
       action=""
-      className="w-[90%] max-w-[500px] p-10 bg-stone-900 border border-white mt-10 rounded-2xl shadow-lg"
+      className="w-[90%] max-w-[500px] p-10 bg-bg-light border border-border mt-10 rounded-2xl shadow-2xl"
     >
-      <h1 className="text-4xl text-center font-bold mb-7 text-white">
-        Todo Registeration
-      </h1>
+      <div className="text-text flex items-center gap-2 mb-5">
+       <div className="text-3xl font-semibold"> Atomic Seats</div>
+        <FaPlane  className="text-4xl"/>
+        <div className="text-2xl font-semibold">
+          - Sign Up
+        </div>
+      </div>
       <label htmlFor="name">
-        <div className="text-2xl text-white">Username: </div>
+        <div className="text-2xl text-text">Username: </div>
         <input
           ref={name}
           required
-          className="mt-2 text-gray-600 text-xl p-2 bg-stone-950 w-[100%] rounded outline-none focus:ring-blue-400 focus:ring-2 duration-150"
+          className="mt-2 text-gray-600 text-xl p-2 bg-bg-dark w-[100%] rounded outline-none focus:ring-blue-400 ring-2 ring-border duration-150"
           type="text"
           id="name"
         />
       </label>
       <label htmlFor="email">
-        <div className="text-2xl mt-2 text-white">Email: </div>
+        <div className="text-2xl mt-2 text-text">Email: </div>
         <input
           ref={email}
           required
-          className="mt-2 text-gray-600 text-xl p-2 bg-stone-950 w-[100%] rounded outline-none focus:ring-blue-400 focus:ring-2 duration-150"
+          className="mt-2 text-gray-600 text-xl p-2 bg-bg-dark w-[100%] rounded outline-none focus:ring-blue-400 ring-2 ring-border duration-150"
           type="text"
           id="email"
         />
       </label>
       <label htmlFor="password">
-        <div className="text-2xl mt-2 text-white">Password: </div>
+        <div className="text-2xl mt-2 text-text">Password: </div>
         <input
           ref={password}
           required
-          className="mt-2 text-gray-600 text-xl p-2 bg-stone-950 w-[100%] rounded outline-none focus:ring-blue-400 focus:ring-2 duration-150"
+          className="mt-2 text-gray-600 text-xl p-2 bg-bg-dark w-[100%] rounded outline-none focus:ring-blue-400 ring-2 ring-border duration-150"
           type="password"
           id="password"
         />

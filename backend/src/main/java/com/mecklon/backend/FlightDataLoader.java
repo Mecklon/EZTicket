@@ -26,18 +26,23 @@ public class FlightDataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if(flightRepository.count()>0)return;
+        if (flightRepository.count() > 0) return;
 
         List<String> cities = List.of("Bangalore", "Mumbai", "Delhi", "Hyderabad", "Chennai");
-        List<String> airlines = List.of("Air India", "Spice jet", "Indigo", "King Fisher", "Spirit");
+        List<String> airlines = List.of("Air India", "Spice jet", "Indigo", "Akasa Air", "Air India Express");
 
         List<Flight> flights = new ArrayList<>();
 
         Random random = new Random();
 
+        List<Seat> seats = new ArrayList<>();
+
+
         for (int i = 0; i < 5000; i++) {
             String from = cities.get(random.nextInt(cities.size()));
             String to = cities.get(random.nextInt(cities.size()));
+
+
 
             while (from.equals(to)) {
                 to = cities.get(random.nextInt(cities.size()));
@@ -47,8 +52,10 @@ public class FlightDataLoader implements CommandLineRunner {
 
             LocalDateTime departure = LocalDateTime.now();
             departure = departure.plusDays(random.nextInt(5));
+            departure = departure.plusMinutes(random.nextInt(30));
 
             LocalDateTime arrival = departure.plusHours(1 + random.nextInt(7));
+            arrival = arrival.plusMinutes(random.nextInt(30));
 
             int price = random.nextInt(600, 4000);
 
@@ -61,29 +68,30 @@ public class FlightDataLoader implements CommandLineRunner {
                     .price(price)
                     .build();
 
+            for (char c = 'a'; c < 'g'; c++) {
+                for (int k = 1; k < 33; k++) {
+                    Seat seat = new Seat(
+                            new SeatKey((long) i, c, k),
+                            flight,
+                            SeatStatus.AVAILABLE,
+                            null,
+                            null,
+                            null
+                    );
+                    seats.add(seat);
+                }
+            }
+
             flights.add(flight);
+
         }
 
         flightRepository.saveAll(flights);
-
-        Flight flight = flightRepository.findById((long)1).orElse(null);
-
-        List<Seat> seats = new ArrayList<>();
-
-        for(char c = 'a'; c<='g';c++){
-            for(int i = 1;i< 33;i++){
-                Seat seat = new Seat(
-                        new SeatKey((long)1, c, i),
-                        flight,
-                        SeatStatus.AVAILABLE,
-                        null,
-                        null,
-                        null
-                );
-                seats.add(seat);
-            }
-        }
         seatRepository.saveAll(seats);
+
+
+
+
 
     }
 }
